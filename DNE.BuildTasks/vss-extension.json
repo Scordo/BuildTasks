@@ -1,0 +1,60 @@
+﻿{
+  "manifestVersion": 1,
+  "id": "dne-build-tasks",
+  "name": ".Net Expert Build & Release Tools",
+  "version": "0.1.0",
+  "publisher": "dne",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Build extensions from .Net Expert",
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "version",
+    "build"
+  ],
+  "screenshots": [
+    {
+      "path": "Images/ScreenChangeAssemblyVersions1.png"
+    },
+    {
+      "path": "Images/ScreenChangeAssemblyVersions2.png"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "extension-overview.md"
+    },
+    "license": {
+      "path": "license.txt"
+    }
+  },
+  "branding": {
+    "color": "rgb(0, 0, 0)",
+    "theme": "dark"
+  },
+  "icons": {
+    "default": "extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "ChangeAssemblyVersionsTask"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "dne-build-tasks-change-assembly-versions",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "ChangeAssemblyVersionsTask"
+      }
+    }
+  ]
+}
