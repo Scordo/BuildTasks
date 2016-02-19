@@ -71,6 +71,26 @@
       "groupName": "AssemblyInformationalVersionGroup"
     },
     {
+      "name": "assemblyInformationalVersionPrefixString",
+      "type": "string",
+      "label": "Prefix",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "An optional string which is put in front of the matched version numbers but after an optionally matched prefix-regex-group.",
+      "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyInformationalVersionGroup"
+    },
+    {
+      "name": "assemblyInformationalVersionPostfixString",
+      "type": "string",
+      "label": "Postfix",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "An optional string which is put at the end of the matched version numbers but before an optionally matched postfix-regex-group.",
+      "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyInformationalVersionGroup"
+    },
+    {
       "name": "assemblyVersionBehaviorString",
       "type": "pickList",
       "label": "Versioning behavior",

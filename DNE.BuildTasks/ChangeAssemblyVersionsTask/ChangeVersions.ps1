@@ -3,6 +3,8 @@ param(
 	[string] $assemblyInformationalVersionBehaviorString,
 	[string] $assemblyInformationalVersionString,
 	[string] $assemblyInformationalVersionBuildNumberRegex,
+	[string] $assemblyInformationalVersionPrefixString,
+	[string] $assemblyInformationalVersionPostfixString,
 	[string] $assemblyVersionBehaviorString,
 	[string] $assemblyVersionString,
 	[string] $assemblyVersionBuildNumberRegex,
@@ -94,7 +96,7 @@ function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [st
 	return ""
 }
 
-function GetVersionNumberFromBuildNumber([string] $buildNumberPattern)
+function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] $prefixString, [string] $postfixString)
 {
 	$versionMatches = [System.Text.RegularExpressions.Regex]::Matches($env:BUILD_BUILDNUMBER, $buildNumberPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase);
 
@@ -113,13 +115,16 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern)
 	$firstMatch = $versionMatches[0]
 
 	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "prefix";
+	$versionString += $prefixString
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision";
+	$versionString = $versionString.TrimEnd('.')
+	$versionString += $postfixString
 	$versionString += GetVersionPartString -match $firstMatch -groupName "postfix";
 
-	return $versionString.TrimEnd('.');
+	return $versionString;
 }
 
 
@@ -147,19 +152,19 @@ if ($assemblyInformationalVersionBehavior -eq [VersionBehavior]::None  -AND $ass
 switch ($assemblyInformationalVersionBehavior)
 {
 	"None" { $assemblyInformationalVersionString = $null; continue; }
-	"BuildNumber" { $assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex; continue; }
+	"BuildNumber" { $assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $assemblyInformationalVersionPrefixString -postfixString $assemblyInformationalVersionPostfixString; continue; }
 }
 
 switch ($assemblyVersionBehavior)
 {
 	"None" { $assemblyVersionString = $null; continue; }
-	"BuildNumber" { $assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex; continue; }
+	"BuildNumber" { $assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex -prefixString "" -postfixString "" ; continue; }
 }
 
 switch ($assemblyFileVersionBehavior)
 {
 	"None" { $assemblyFileVersionString = $null; continue; }
-	"BuildNumber" { $assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex; continue; }
+	"BuildNumber" { $assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex -prefixString "" -postfixString "" ; continue; }
 }
 
 

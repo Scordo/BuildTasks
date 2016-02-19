@@ -6,30 +6,32 @@
 # assemblyInformationalVersionString              
 [string] $p2 = "1.2.3 Release"   
 # assemblyInformationalVersionBuildNumberRegex
-[string] $p3 = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)\s+-(?<postfix>.+)"      
+[string] $p3 = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)-(?<postfix>.+)"      
+[string] $p4 = ""      
+[string] $p5 = " "      
 
 # assemblyVersionBehavior
-[string] $p4 = "Custom" 
+[string] $p6 = "Custom" 
 # assemblyVersionString              
-[string] $p5 = "1.2.0.0"   
+[string] $p7 = "1.2.0.0"   
 # assemblyVersionBuildNumberRegex
-[string] $p6 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+[string] $p8 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
 
 # assemblyFileVersionBehavior
-[string] $p7 = "Custom" 
+[string] $p9 = "Custom" 
 # assemblyFileVersionString              
-[string] $p8 = "1.2.3.4"   
+[string] $p10 = "1.2.3.4"   
 # assemblyFileVersionBuildNumberRegex
-[string] $p9 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+[string] $p11 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
 
 
 # recursiveSearch            
-[string] $p10 = "true"              
+[string] $p12 = "true"              
 # fileNamePattern
-[string] $p11 = "AssemblyInfo.cs"    
+[string] $p13 = "AssemblyInfo.cs"    
 # searchDirectory
-[string] $p12 = "D:\Temp\P1"         
+[string] $p14 = "D:\Temp\P1"         
 
-[Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "20160219 - 1.5.47.1 - Main", "Process")
+[Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "20160219-1.5.51.1-Main", "Process")
 
-& ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 -verbose
+& ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14 -verbose
