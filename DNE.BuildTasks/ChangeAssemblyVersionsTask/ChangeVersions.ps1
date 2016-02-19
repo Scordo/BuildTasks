@@ -74,7 +74,7 @@ function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informatio
 	[IO.File]::WriteAllText($filePath, $fileContent)
 }
 
-function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
+function GetVersionPartDottedString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
 {
 	if ($match.Groups[$groupName].Success)
 	{
@@ -82,6 +82,16 @@ function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [st
 	}
 	
 	return "0."
+}
+
+function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
+{
+	if ($match.Groups[$groupName].Success)
+	{
+		return $match.Groups[$groupName].Value 
+	}
+	
+	return ""
 }
 
 function GetVersionNumberFromBuildNumber([string] $buildNumberPattern)
@@ -102,10 +112,12 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern)
 	
 	$firstMatch = $versionMatches[0]
 
-	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "major";
-	$versionString += GetVersionPartString -match $firstMatch -groupName "minor";
-	$versionString += GetVersionPartString -match $firstMatch -groupName "build";
-	$versionString += GetVersionPartString -match $firstMatch -groupName "revision";
+	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "prefix";
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major";
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor";
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build";
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision";
+	$versionString += GetVersionPartString -match $firstMatch -groupName "postfix";
 
 	return $versionString.TrimEnd('.');
 }

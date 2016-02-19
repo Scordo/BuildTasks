@@ -6,7 +6,7 @@
 # assemblyInformationalVersionString              
 [string] $p2 = "1.2.3 Release"   
 # assemblyInformationalVersionBuildNumberRegex
-[string] $p3 = "(?<major>\d+).(?<minor>\d+).(?<build>\d+)"      
+[string] $p3 = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)\s+-(?<postfix>.+)"      
 
 # assemblyVersionBehavior
 [string] $p4 = "Custom" 
@@ -30,6 +30,6 @@
 # searchDirectory
 [string] $p12 = "D:\Temp\P1"         
 
-[Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "DayZ 10.2334.4 Beta Build", "Process")
+[Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "20160219 - 1.5.47.1 - Main", "Process")
 
-& ((Split-Path $MyInvocation.MyCommand.Path) + "\Task1\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 -verbose
+& ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 -verbose

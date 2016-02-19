@@ -31,7 +31,7 @@
     },
     {
       "name": "AssemblyInformationalVersionGroup",
-      "displayName": "Product Version",
+      "displayName": "Assembly Informational Version",
       "isExpanded": true
     }
   ],
@@ -66,7 +66,7 @@
       "label": "Buildnumber Version-Regex",
       "defaultValue": "(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<build>\\d+)\\.(?<revision>\\d+)",
       "required": false,
-      "helpMarkDown": "This is the regex used to extract the version number from the build numer of the current build. The task will search for the named groups major, minor, build and revision. All groups are optional and will be replaced with 0 if they do not exist.",
+      "helpMarkDown": "This is the regex used to extract the version number from the build numer of the current build. The task will search for the named groups major, minor, build and revision. All groups are optional and will be replaced with 0 if they do not exist. Additionally there are 2 more groups: prefix and postfix, which both are optional. Matches of these groups will be put in the front or back of the version.",
       "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
       "groupName": "AssemblyInformationalVersionGroup"
     },
