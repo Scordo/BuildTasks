@@ -1,3 +1,3 @@
 ﻿
 cd bin
-tfx extension publish --token %VSOToken% --share-with scordo
+tfx extension publish --token %VSOToken%

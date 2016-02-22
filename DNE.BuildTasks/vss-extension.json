@@ -4,6 +4,7 @@
   "name": "JH - Build & Release Tools",
   "version": "1.0.0",
   "publisher": "dne",
+  "public":  true,
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
