@@ -1,15 +1,15 @@
 ﻿{
   "manifestVersion": 1,
   "id": "dne-build-tasks",
-  "name": ".Net Expert Build & Release Tools",
-  "version": "0.1.0",
+  "name": "JH - Build & Release Tools",
+  "version": "1.0.0",
   "publisher": "dne",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
-  "description": "Build extensions from .Net Expert",
+  "description": "Build extensions for assembly versioning & more.",
   "categories": [
     "Build and release"
   ],
