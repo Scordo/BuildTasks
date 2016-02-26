@@ -7,7 +7,6 @@ This extension contains helpful build tasks.
 	This can be done for 3 different versions separately: AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion
 
 
-**Changelog**
-***
+##### Changelog
 Version: 1.0.1 - 26th of Febuary 2016
 * Improved logging of "Change Assembly Versions" Task 
