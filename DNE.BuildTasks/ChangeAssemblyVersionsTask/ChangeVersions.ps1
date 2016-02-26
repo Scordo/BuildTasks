@@ -53,7 +53,7 @@ function ReplaceVersionInFileContent([string] $currentFileContent, [string] $att
 function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informationalVersion, [string] $assemblyVersion,[string] $fileVersion)
 {
 	Write-Verbose ""
-	Write-Host "Going to remove VersionInfo from file $filePath .."
+	Write-Host "Going to update version info of file $filePath .."
 
 	$fileContent = [IO.File]::ReadAllText($filePath)
 
@@ -128,13 +128,14 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] 
 }
 
 
-Write-Host "Entering script $MyInvocation.MyCommand.Name"
-Write-Host "Parameter Values"
+Write-Host "Entering script $($MyInvocation.MyCommand.Name)"
+Write-Host ""
+Write-Host "Parameter Values:"
 foreach($key in $PSBoundParameters.Keys)
 {
-	Write-Host ($key + ' = ' + $PSBoundParameters[$key])
+	Write-Host ("`t" + $key + ' = ' + $PSBoundParameters[$key])
 }
-Write-Host "Build.BuildNumber = $env:BUILD_BUILDNUMBER" 
+Write-Host "`tBuild.BuildNumber = $env:BUILD_BUILDNUMBER" 
 
 #Convert the flags to boolean values
 
@@ -149,24 +150,77 @@ if ($assemblyInformationalVersionBehavior -eq [VersionBehavior]::None  -AND $ass
 	ExitWithCode -exitcode 1
 }
 
+Write-Host ""
+Write-Host "Versions to apply:"
+
 switch ($assemblyInformationalVersionBehavior)
 {
-	"None" { $assemblyInformationalVersionString = $null; continue; }
-	"BuildNumber" { $assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $assemblyInformationalVersionPrefixString -postfixString $assemblyInformationalVersionPostfixString; continue; }
+	"None" 
+	{ 
+		$assemblyInformationalVersionString = $null
+		Write-Host "`tAssemblyInformationalVersion: Do nothing is configured"
+		continue
+	}
+	"BuildNumber" 
+	{ 
+		$assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $assemblyInformationalVersionPrefixString -postfixString $assemblyInformationalVersionPostfixString
+		Write-Host "`tAssemblyInformationalVersion: $assemblyInformationalVersionString"
+		continue
+	}
+	"Custom" 
+	{
+		Write-Host "`tAssemblyInformationalVersion: $assemblyInformationalVersionString"
+		continue 
+	}
 }
 
 switch ($assemblyVersionBehavior)
 {
-	"None" { $assemblyVersionString = $null; continue; }
-	"BuildNumber" { $assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex -prefixString "" -postfixString "" ; continue; }
+	"None" 
+	{ 
+		$assemblyVersionString = $null
+		Write-Host "`tAssemblyVersion: Do nothing is configured"
+
+		continue
+	}
+	"BuildNumber" 
+	{ 
+		$assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex -prefixString "" -postfixString "" 
+		Write-Host "`tAssemblyVersion: $assemblyVersionString"
+
+		continue
+	}
+	"Custom" 
+	{
+		Write-Host "`tAssemblyVersion: $assemblyVersionString"
+		continue 
+	}
 }
 
 switch ($assemblyFileVersionBehavior)
 {
-	"None" { $assemblyFileVersionString = $null; continue; }
-	"BuildNumber" { $assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex -prefixString "" -postfixString "" ; continue; }
+	"None" 
+	{ 
+		$assemblyFileVersionString = $null 
+		Write-Host "`tAssemblyFileVersion: Do nothing is configured"
+		
+		continue
+	}
+	"BuildNumber" 
+	{ 
+		$assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex -prefixString "" -postfixString "" 
+		Write-Host "`tAssemblyFileVersion: $assemblyFileVersionString"
+
+		continue
+	}
+	"Custom" 
+	{
+		Write-Host "`tAssemblyFileVersion: $assemblyFileVersionString"
+		continue 
+	}
 }
 
+Write-Host ""
 
 $foundFiles = Get-ChildItem -Path $searchDirectory -Filter $fileNamePattern -Recurse:$isRecursiveSearch -ErrorAction SilentlyContinue -Force
 
@@ -175,7 +229,7 @@ ForEach( $foundFile in $foundFiles)
 	ReplaceMultipleVersionsInFile -filePath $foundFile.Fullname -informationalVersion $assemblyInformationalVersionString -assemblyVersion $assemblyVersionString -fileVersion $assemblyFileVersionString
 }
 
-Write-Verbose ""
-Write-Host "Replaced version information in $($foundFiles.Count) files." 
+Write-Host ""
+Write-Host "Replaced version info in $($foundFiles.Count) files." 
 
 
