@@ -38,8 +38,17 @@
     "home": {
       "uri": "https://github.com/Scordo/BuildTasks"
     },
+    "getstarted": {
+      "uri": "https://github.com/Scordo/BuildTasks"
+    },
+    "learn": {
+      "uri": "https://github.com/Scordo/BuildTasks"
+    },
     "repository": {
       "uri": "https://github.com/Scordo/BuildTasks"
+    },
+    "support": {
+      "uri": "https://github.com/Scordo/BuildTasks/issues"
     },
     "issues": {
       "uri": "https://github.com/Scordo/BuildTasks/issues"
