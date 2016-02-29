@@ -13,7 +13,7 @@
 # assemblyVersionBehavior
 [string] $p6 = "Custom" 
 # assemblyVersionString              
-[string] $p7 = "1.2.0.0"   
+[string] $p7 = '1.2.0.$TfvcChangeset'   
 # assemblyVersionBuildNumberRegex
 [string] $p8 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
 
@@ -32,6 +32,8 @@
 # searchDirectory
 [string] $p14 = "D:\Temp\P1"         
 
+
+[Environment]::SetEnvironmentVariable("BUILD_SOURCEVERSION", "C12345", "Process")
 [Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "20160219-1.5.51.1-Main", "Process")
 
 & ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14 -verbose

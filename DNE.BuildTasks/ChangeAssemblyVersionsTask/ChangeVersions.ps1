@@ -86,14 +86,17 @@ function GetVersionPartDottedString([System.Text.RegularExpressions.Match] $matc
 	return "0."
 }
 
-function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
+function SetChangesetNumber()
 {
-	if ($match.Groups[$groupName].Success)
+	$matches = [System.Text.RegularExpressions.Regex]::Matches($env:BUILD_SOURCEVERSION, '^C(?<cs>\d+)$', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase);
+	if ($matches.Count -eq 0) 
 	{
-		return $match.Groups[$groupName].Value 
+		$script:TfvcChangeset = $null;
 	}
-	
-	return ""
+	else
+	{
+		$script:TfvcChangeset = $matches[0].Groups["cs"].Value
+	}
 }
 
 function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] $prefixString, [string] $postfixString)
@@ -127,6 +130,17 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] 
 	return $versionString;
 }
 
+function GetVersionPartString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
+{
+	if ($match.Groups[$groupName].Success)
+	{
+		return $match.Groups[$groupName].Value 
+	}
+	
+	return ""
+}
+
+
 
 Write-Host "Entering script $($MyInvocation.MyCommand.Name)"
 Write-Host ""
@@ -136,6 +150,10 @@ foreach($key in $PSBoundParameters.Keys)
 	Write-Host ("`t" + $key + ' = ' + $PSBoundParameters[$key])
 }
 Write-Host "`tBuild.BuildNumber = $env:BUILD_BUILDNUMBER" 
+Write-Host "`tBuild.SourceVersion = $env:BUILD_SOURCEVERSION"
+SetChangesetNumber
+Write-Host "`tTfvcChangeset = $TfvcChangeset"
+
 
 #Convert the flags to boolean values
 
@@ -169,6 +187,7 @@ switch ($assemblyInformationalVersionBehavior)
 	}
 	"Custom" 
 	{
+		$assemblyInformationalVersionString = $ExecutionContext.InvokeCommand.ExpandString($assemblyInformationalVersionString)
 		Write-Host "`tAssemblyInformationalVersion: $assemblyInformationalVersionString"
 		continue 
 	}
@@ -192,6 +211,7 @@ switch ($assemblyVersionBehavior)
 	}
 	"Custom" 
 	{
+		$assemblyVersionString = $ExecutionContext.InvokeCommand.ExpandString($assemblyVersionString)
 		Write-Host "`tAssemblyVersion: $assemblyVersionString"
 		continue 
 	}
@@ -215,6 +235,7 @@ switch ($assemblyFileVersionBehavior)
 	}
 	"Custom" 
 	{
+		$assemblyFileVersionString = $ExecutionContext.InvokeCommand.ExpandString($assemblyFileVersionString)
 		Write-Host "`tAssemblyFileVersion: $assemblyFileVersionString"
 		continue 
 	}
