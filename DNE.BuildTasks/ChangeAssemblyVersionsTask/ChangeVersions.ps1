@@ -118,13 +118,13 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] 
 	$firstMatch = $versionMatches[0]
 
 	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "prefix";
-	$versionString += $ExecutionContext.InvokeCommand.ExpandString($prefixString)
+	$versionString += $prefixString
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision";
 	$versionString = $versionString.TrimEnd('.')
-	$versionString += $ExecutionContext.InvokeCommand.ExpandString($postfixString)
+	$versionString += $postfixString
 	$versionString += GetVersionPartString -match $firstMatch -groupName "postfix";
 
 	return $versionString;
@@ -181,7 +181,11 @@ switch ($assemblyInformationalVersionBehavior)
 	}
 	"BuildNumber" 
 	{ 
-		$assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $assemblyInformationalVersionPrefixString -postfixString $assemblyInformationalVersionPostfixString
+		$prefix = $ExecutionContext.InvokeCommand.ExpandString($assemblyInformationalVersionPrefixString)
+		Write-Host "`tPrefix: $prefix"
+		$postfix = $ExecutionContext.InvokeCommand.ExpandString($assemblyInformationalVersionPostfixString)
+		Write-Host "`tPostfix: $postfix"
+		$assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $prefix -postfixString $postfix
 		Write-Host "`tAssemblyInformationalVersion: $assemblyInformationalVersionString"
 		continue
 	}
