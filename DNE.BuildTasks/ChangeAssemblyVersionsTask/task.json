@@ -56,7 +56,7 @@
       "label": "AssemblyInformationalVersion",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset to use the Tfvc Changesetnumber.",
+      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset which is the Tfvc Changesetnumber.",
       "visibleRule": "assemblyInformationalVersionBehaviorString = Custom",
       "groupName": "AssemblyInformationalVersionGroup"
     },
@@ -76,7 +76,7 @@
       "label": "Prefix",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "An optional string which is put in front of the matched version numbers but after an optionally matched prefix-regex-group.",
+      "helpMarkDown": "An optional string which is put in front of the matched version numbers but after an optionally matched prefix-regex-group. You can use the special variable $TfvcChangeset which is the Tfvc Changesetnumber.",
       "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
       "groupName": "AssemblyInformationalVersionGroup"
     },
@@ -86,7 +86,7 @@
       "label": "Postfix",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "An optional string which is put at the end of the matched version numbers but before an optionally matched postfix-regex-group.",
+      "helpMarkDown": "An optional string which is put at the end of the matched version numbers but before an optionally matched postfix-regex-group. You can use the special variable $TfvcChangeset which is the Tfvc Changesetnumber.",
       "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
       "groupName": "AssemblyInformationalVersionGroup"
     },
@@ -110,7 +110,7 @@
       "label": "AssemblyVersion",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset to use the Tfvc Changesetnumber.",
+      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset which is the Tfvc Changesetnumber.",
       "visibleRule": "assemblyVersionBehaviorString = Custom",
       "groupName": "AssemblyVersionGroup"
     },
@@ -144,7 +144,7 @@
       "label": "AssemblyFileVersion",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset to use the Tfvc Changesetnumber.",
+      "helpMarkDown": "Provide a static version or use variables to define the version. You can use the special variable $TfvcChangeset which is the Tfvc Changesetnumber.",
       "visibleRule": "assemblyFileVersionBehaviorString = Custom",
       "groupName": "AssemblyFileVersionGroup"
     },

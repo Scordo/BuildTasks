@@ -118,13 +118,13 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] 
 	$firstMatch = $versionMatches[0]
 
 	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "prefix";
-	$versionString += $prefixString
+	$versionString += $ExecutionContext.InvokeCommand.ExpandString($prefixString)
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build";
 	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision";
 	$versionString = $versionString.TrimEnd('.')
-	$versionString += $postfixString
+	$versionString += $ExecutionContext.InvokeCommand.ExpandString($postfixString)
 	$versionString += GetVersionPartString -match $firstMatch -groupName "postfix";
 
 	return $versionString;
