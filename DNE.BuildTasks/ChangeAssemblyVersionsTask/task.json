@@ -42,7 +42,7 @@
       "label": "Versioning behavior",
       "defaultValue": "None",
       "required": true,
-      "helpMarkDown": "The behavior used vor versioning",
+      "helpMarkDown": "The behavior used for versioning",
       "options": {
         "None": "Keep defaults - do nothing",
         "Custom": "Provide a static version or use variables to define the version.",
@@ -96,7 +96,7 @@
       "label": "Versioning behavior",
       "defaultValue": "None",
       "required": true,
-      "helpMarkDown": "The behavior used vor versioning",
+      "helpMarkDown": "The behavior used for versioning",
       "options": {
         "None": "Keep defaults - do nothing",
         "Custom": "Provide a static version or use variables to define the version.",
@@ -130,7 +130,7 @@
       "label": "Versioning behavior",
       "defaultValue": "None",
       "required": true,
-      "helpMarkDown": "The behavior used vor versioning",
+      "helpMarkDown": "The behavior used for versioning",
       "options": {
         "None": "Keep defaults - do nothing",
         "Custom": "Provide a static version or use variables to define the version.",
