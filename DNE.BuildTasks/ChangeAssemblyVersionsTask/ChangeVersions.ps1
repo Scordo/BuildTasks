@@ -1,20 +1,22 @@
 ﻿[CmdletBinding()]
-param(
-	[string] $assemblyInformationalVersionBehaviorString,
-	[string] $assemblyInformationalVersionString,
-	[string] $assemblyInformationalVersionBuildNumberRegex,
-	[string] $assemblyInformationalVersionPrefixString,
-	[string] $assemblyInformationalVersionPostfixString,
-	[string] $assemblyVersionBehaviorString,
-	[string] $assemblyVersionString,
-	[string] $assemblyVersionBuildNumberRegex,
-	[string] $assemblyFileVersionBehaviorString,
-	[string] $assemblyFileVersionString,
-	[string] $assemblyFileVersionBuildNumberRegex,
-	[string] $recursiveSearch,
-	[string] $fileNamePattern,
-	[string] $searchDirectory
-)
+param()
+
+Trace-VstsEnteringInvocation $MyInvocation
+
+[string] $assemblyInformationalVersionBehaviorString = Get-VstsInput -Name assemblyInformationalVersionBehaviorString
+[string] $assemblyInformationalVersionString  = Get-VstsInput -Name assemblyInformationalVersionString
+[string] $assemblyInformationalVersionBuildNumberRegex  = Get-VstsInput -Name assemblyInformationalVersionBuildNumberRegex
+[string] $assemblyInformationalVersionPrefixString  = Get-VstsInput -Name assemblyInformationalVersionPrefixString
+[string] $assemblyInformationalVersionPostfixString  = Get-VstsInput -Name assemblyInformationalVersionPostfixString
+[string] $assemblyVersionBehaviorString  = Get-VstsInput -Name assemblyVersionBehaviorString
+[string] $assemblyVersionString  = Get-VstsInput -Name assemblyVersionString
+[string] $assemblyVersionBuildNumberRegex  = Get-VstsInput -Name assemblyVersionBuildNumberRegex
+[string] $assemblyFileVersionBehaviorString  = Get-VstsInput -Name assemblyFileVersionBehaviorString
+[string] $assemblyFileVersionString  = Get-VstsInput -Name assemblyFileVersionString
+[string] $assemblyFileVersionBuildNumberRegex  = Get-VstsInput -Name assemblyFileVersionBuildNumberRegex
+[string] $recursiveSearch  = Get-VstsInput -Name recursiveSearch
+[string] $fileNamePattern  = Get-VstsInput -Name fileNamePattern
+[string] $searchDirectory  = Get-VstsInput -Name searchDirectory
 
 
 Add-Type -TypeDefinition "public enum VersionBehavior { None, Custom, BuildNumber }"
@@ -88,7 +90,7 @@ function GetVersionPartDottedString([System.Text.RegularExpressions.Match] $matc
 
 function SetChangesetNumber()
 {
-	$matches = [System.Text.RegularExpressions.Regex]::Matches($env:BUILD_SOURCEVERSION, '^C(?<cs>\d+)$', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase);
+	$matches = [System.Text.RegularExpressions.Regex]::Matches($env:BUILD_SOURCEVERSION, '^C?(?<cs>\d+)$', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase);
 	if ($matches.Count -eq 0) 
 	{
 		$script:TfvcChangeset = $null;
@@ -256,5 +258,7 @@ ForEach( $foundFile in $foundFiles)
 
 Write-Host ""
 Write-Host "Replaced version info in $($foundFiles.Count) files." 
-
+Set-VstsTaskVariable -Name DNE_AssemblyInformationalVersionString -Value $assemblyInformationalVersionString
+Set-VstsTaskVariable -Name DNE_AssemblyVersionString -Value $assemblyVersionString
+Set-VstsTaskVariable -Name DNE_AssemblyFileVersionString -Value $assemblyFileVersionString
 

@@ -43,7 +43,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\FindFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\InputFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\lib.json" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\LocalizationFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\LoggingCommandFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\LongPathFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\OutFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\ServerOMFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\ToolFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\TraceFunctions.ps1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\VstsTaskSdk.psd1" />
+    <None Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\VstsTaskSdk.psm1" />
     <None Include="DebugChangeVersion.ps1" />
+    <None Include="SharePackage.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="DeployPackage.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -53,6 +68,16 @@
     <None Include="ChangeAssemblyVersionsTask\task.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\de-de\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\en-US\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\es-es\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\fr-fr\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\it-IT\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\ja-jp\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\ko-KR\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\ru-RU\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\zh-CN\resources.resjson" />
+    <Content Include="ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk\Strings\resources.resjson\zh-TW\resources.resjson" />
     <Content Include="Images\ScreenChangeAssemblyVersions1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -80,7 +105,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>tfx extension create --manifest-globs vss-extension.json</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)ChangeAssemblyVersionsTask\ps_modules" "$(TargetDir)ChangeAssemblyVersionsTask\ps_modules" /E /R /Y /I
+tfx extension create --manifest-globs vss-extension.json</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

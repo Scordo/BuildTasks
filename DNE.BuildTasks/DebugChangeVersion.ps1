@@ -1,39 +1,29 @@
-﻿#invoke-expression -Command ".\$PSScriptRoot\Task1\ChangeVersions.ps1"
+﻿Import-Module ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ps_modules\VstsTaskSdk") -ArgumentList @{ NonInteractive = $true }
 
+$env:BUILD_SOURCEVERSION = "C12345"
+$env:BUILD_BUILDNUMBER = "20160219-1.5.51.1-Main"
 
-# assemblyInformationalVersionBehavior
-[string] $p1 = "BuildNumber" 
-# assemblyInformationalVersionString              
-[string] $p2 = "1.2.3 Release"   
-# assemblyInformationalVersionBuildNumberRegex
-[string] $p3 = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)-(?<postfix>.+)"      
-[string] $p4 = ""      
-[string] $p5 = " "      
+$env:INPUT_assemblyInformationalVersionBehaviorString = "BuildNumber" 
+$env:INPUT_assemblyInformationalVersionString = "1.2.3 Release"   
+$env:INPUT_assemblyInformationalVersionBuildNumberRegex = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)-(?<postfix>.+)"      
+$env:INPUT_assemblyInformationalVersionPrefixString = ""
+$env:INPUT_assemblyInformationalVersionPostfixString = " "
 
-# assemblyVersionBehavior
-[string] $p6 = "Custom" 
-# assemblyVersionString              
-[string] $p7 = '1.2.0.$TfvcChangeset'   
-# assemblyVersionBuildNumberRegex
-[string] $p8 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+$env:INPUT_assemblyVersionBehaviorString = "Custom" 
+$env:INPUT_assemblyVersionString = '1.2.0.$TfvcChangeset'   
+$env:INPUT_assemblyVersionBuildNumberRegex = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
 
-# assemblyFileVersionBehavior
-[string] $p9 = "Custom" 
-# assemblyFileVersionString              
-[string] $p10 = "1.2.3.4"   
-# assemblyFileVersionBuildNumberRegex
-[string] $p11 = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+$env:INPUT_assemblyFileVersionBehaviorString = "Custom" 
+$env:INPUT_assemblyFileVersionString = "1.2.3.4"   
+$env:INPUT_assemblyFileVersionBuildNumberRegex = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
 
+$env:INPUT_recursiveSearch = "true"
+$env:INPUT_fileNamePattern = "AssemblyInfo.cs"    
+$env:INPUT_searchDirectory = "D:\Temp\P1"
 
-# recursiveSearch            
-[string] $p12 = "true"              
-# fileNamePattern
-[string] $p13 = "AssemblyInfo.cs"    
-# searchDirectory
-[string] $p14 = "D:\Temp\P1"         
+[string ]$scriptLocation = ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1")
+Invoke-VstsTaskScript -ScriptBlock ([scriptblock]::Create($scriptLocation)) -Verbose
 
-
-[Environment]::SetEnvironmentVariable("BUILD_SOURCEVERSION", "C12345", "Process")
-[Environment]::SetEnvironmentVariable("BUILD_BUILDNUMBER", "20160219-1.5.51.1-Main", "Process")
-
-& ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1") $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11 $p12 $p13 $p14 -verbose
+Write-Host DNE_AssemblyInformationalVersionString = (Get-VstsTaskVariable -Name DNE_AssemblyVersionString)
+Write-Host DNE_AssemblyInformationalVersionString = (Get-VstsTaskVariable -Name DNE_AssemblyFileVersionString)
+Write-Host DNE_AssemblyInformationalVersionString = (Get-VstsTaskVariable -Name DNE_AssemblyInformationalVersionString)

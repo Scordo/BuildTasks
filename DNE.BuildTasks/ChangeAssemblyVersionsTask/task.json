@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "A516EAB5-3EEC-455E-8685-38A41606D2AC",
   "name": "ChangeAssemblyVersionsTask",
   "friendlyName": "Change Assembly Versions",
@@ -13,7 +13,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 3
+    "Patch": 5
   },
   "demands": [
     "DotNetFramework"
@@ -133,7 +133,7 @@
       "helpMarkDown": "The behavior used vor versioning",
       "options": {
         "None": "Keep defaults - do nothing",
-        "Custom": "Provide a static version or use Variables to define the version.",
+        "Custom": "Provide a static version or use variables to define the version.",
         "BuildNumber": "Extract the version from the Buildnumber using a regular expression"
       },
       "groupName": "AssemblyFileVersionGroup"
@@ -185,10 +185,8 @@
   ],
   "instanceNameFormat": "Update versions in file '$(fileNamePattern)' of directory '$(searchDirectory)' - recursive: '$(recursiveSearch)' ",
   "execution": {
-    "PowerShell": {
-      "target": "$(currentDirectory)\\ChangeVersions.ps1",
-      "argumentFormat": "",
-      "workingDirectory": ""
+    "PowerShell3": {
+      "target": "$(currentDirectory)\\ChangeVersions.ps1"
     }
   }
 }

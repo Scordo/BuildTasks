@@ -8,6 +8,12 @@ This extension contains helpful build tasks.
 
 **Changelog**
 ---
+Version: 1.0.5 - 2nd of July 2016
+* Fixed bug in detecting TfvcChangeset for VSTS only (Build.SourceVersion is no longer prefix with 'C')
+
+Version: 1.0.4 - 2nd of July 2016
+* After executing the task you can now use the generated versions in further build steps using the following variables: $(DNE_AssemblyVersionString), $(DNE_AssemblyFileVersionString) and $(DNE_AssemblyInformationalVersionString)
+
 Version: 1.0.3 - 29th of February 2016
 * Fixed a bug with usage of variable $TfvcChangeset in "prefix" and "postfix" of "Change Assembly Versions" Task 
 
