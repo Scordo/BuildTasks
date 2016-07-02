@@ -8,6 +8,9 @@ This extension contains helpful build tasks.
 
 **Changelog**
 ---
+Version: 1.0.6 - 2nd of July 2016
+* Fixed extension icon - got broken somehow
+
 Version: 1.0.5 - 2nd of July 2016
 * Fixed bug in detecting TfvcChangeset for VSTS only (Build.SourceVersion is no longer prefix with 'C')
 
