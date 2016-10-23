@@ -20,6 +20,7 @@ $env:INPUT_assemblyFileVersionBuildNumberRegex = "(?<major>\\d+).(?<minor>\\d+).
 $env:INPUT_recursiveSearch = "true"
 $env:INPUT_fileNamePattern = "AssemblyInfo.cs"    
 $env:INPUT_searchDirectory = "D:\Temp\P1"
+$env:INPUT_overwriteReadOnly = "true"
 
 [string ]$scriptLocation = ((Split-Path $MyInvocation.MyCommand.Path) + "\ChangeAssemblyVersionsTask\ChangeVersions.ps1")
 Invoke-VstsTaskScript -ScriptBlock ([scriptblock]::Create($scriptLocation)) -Verbose

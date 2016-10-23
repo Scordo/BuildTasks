@@ -181,6 +181,14 @@
       "defaultValue": "true",
       "required": true,
       "helpMarkDown": "Specify whether to do a recursive search for the file pattern"
+    },
+    {
+      "name": "overwriteReadOnly",
+      "type": "boolean",
+      "label": "Overwrite readonly",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "Specify whether to overwrite read-only assembly version info files"
     }
   ],
   "instanceNameFormat": "Update versions in file '$(fileNamePattern)' of directory '$(searchDirectory)' - recursive: '$(recursiveSearch)' ",

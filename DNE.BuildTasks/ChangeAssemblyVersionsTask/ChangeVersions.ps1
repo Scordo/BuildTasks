@@ -17,6 +17,7 @@ Trace-VstsEnteringInvocation $MyInvocation
 [string] $recursiveSearch  = Get-VstsInput -Name recursiveSearch
 [string] $fileNamePattern  = Get-VstsInput -Name fileNamePattern
 [string] $searchDirectory  = Get-VstsInput -Name searchDirectory
+[string] $overwriteReadOnly  = Get-VstsInput -Name overwriteReadOnly
 
 
 Add-Type -TypeDefinition "public enum VersionBehavior { None, Custom, BuildNumber }"
@@ -52,7 +53,7 @@ function ReplaceVersionInFileContent([string] $currentFileContent, [string] $att
 }
 
 
-function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informationalVersion, [string] $assemblyVersion,[string] $fileVersion)
+function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informationalVersion, [string] $assemblyVersion,[string] $fileVersion, [bool] $overwriteReadOnlyFile)
 {
 	Write-Verbose ""
 	Write-Host "Going to update version info of file $filePath .."
@@ -72,6 +73,14 @@ function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informatio
 	if ($informationalVersion)
 	{
 		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $informationalVersion -attributeName "AssemblyInformational"
+	}
+
+	$file = Get-Item $filePath
+
+	if ($overwriteReadOnlyFile -and $file.IsReadOnly -eq $true)  
+	{  
+		Write-Verbose "Removing readonly flag from file $filePath .."
+		$file.IsReadOnly = $false   
 	}
 
 	Write-Verbose "Writing version modifications"
@@ -163,6 +172,7 @@ Write-Host "`tTfvcChangeset = $TfvcChangeset"
 [VersionBehavior] $assemblyVersionBehavior = $assemblyVersionBehaviorString;
 [VersionBehavior] $assemblyFileVersionBehavior = $assemblyFileVersionBehaviorString;
 [bool] $isRecursiveSearch = [bool]::Parse($recursiveSearch)    
+[bool] $overwriteReadOnlyFiles = If ($overwriteReadOnly -eq $null -or $overwriteReadOnly -eq '') {$false} Else {[bool]::Parse($overwriteReadOnly)}
 
 if ($assemblyInformationalVersionBehavior -eq [VersionBehavior]::None  -AND $assemblyVersionBehavior -eq [VersionBehavior]::None -AND $assemblyFileVersionBehavior -eq [VersionBehavior]::None)
 {
@@ -253,7 +263,7 @@ $foundFiles = Get-ChildItem -Path $searchDirectory -Filter $fileNamePattern -Rec
 
 ForEach( $foundFile in $foundFiles) 
 {
-	ReplaceMultipleVersionsInFile -filePath $foundFile.Fullname -informationalVersion $assemblyInformationalVersionString -assemblyVersion $assemblyVersionString -fileVersion $assemblyFileVersionString
+	ReplaceMultipleVersionsInFile -filePath $foundFile.Fullname -informationalVersion $assemblyInformationalVersionString -assemblyVersion $assemblyVersionString -fileVersion $assemblyFileVersionString -overwriteReadOnlyFile $overwriteReadOnlyFiles
 }
 
 Write-Host ""

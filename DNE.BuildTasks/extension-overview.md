@@ -8,6 +8,9 @@ This extension contains helpful build tasks.
 
 **Changelog**
 ---
+Version: 1.0.7 - 28th of Oct 2016
+* Added option to overwrite readonly files
+
 Version: 1.0.6 - 2nd of July 2016
 * Fixed extension icon - got broken somehow
 
