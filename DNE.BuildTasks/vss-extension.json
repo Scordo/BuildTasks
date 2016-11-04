@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "dne-build-tasks",
   "name": "JH - Build & Release Tools",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "publisher": "dne",
   "public":  true,
   "targets": [

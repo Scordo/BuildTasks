@@ -28,10 +28,26 @@ function ExitWithCode([int] $exitcode)
 	exit 
 }
 
-function ReplaceVersionInFileContent([string] $currentFileContent, [string] $attributeName, [string] $newVersion)
+function ReplaceVersionInFileContent([string] $currentFileContent, [string] $attributeName, [string] $newVersion, [string] $fileExtension)
 {
-	$attributPattern= "\[\s*assembly\s*:\s*$($attributeName)Version(Attribute)?\s*\(.*?\)\s*\]"
-	$newVersionAttribute = '[assembly:'+$attributeName+'Version("'+$newVersion+'")]'
+	$attributPattern = "";
+	$newVersionAttribute = "";
+
+	switch ($fileExtension)
+	{
+		"vb"
+		{
+			# Case for visual basic
+			$attributPattern= "\<\s*assembly\s*:\s*$($attributeName)Version(Attribute)?\s*\(.*?\)\s*\>"
+			$newVersionAttribute = '<Assembly: '+$attributeName+'Version("'+$newVersion+'")>'
+		}
+		default
+		{
+			# C# is the default case
+			$attributPattern= "\[\s*assembly\s*:\s*$($attributeName)Version(Attribute)?\s*\(.*?\)\s*\]"
+			$newVersionAttribute = '[assembly:'+$attributeName+'Version("'+$newVersion+'")]'
+		}
+	}
 
 	Write-Verbose "Replacing $($attributeName)Version-Attribute.."
 
@@ -58,21 +74,23 @@ function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informatio
 	Write-Verbose ""
 	Write-Host "Going to update version info of file $filePath .."
 
+	$fileExtension = [IO.Path]::GetExtension($filePath).TrimStart(".").ToLower();
 	$fileContent = [IO.File]::ReadAllText($filePath)
+
 
 	if ($assemblyVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $assemblyVersion -attributeName "Assembly"
+		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $assemblyVersion -attributeName "Assembly" -fileExtension $fileExtension
 	}
 
 	if ($fileVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $fileVersion -attributeName "AssemblyFile"
+		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $fileVersion -attributeName "AssemblyFile" -fileExtension $fileExtension
 	}
 
 	if ($informationalVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $informationalVersion -attributeName "AssemblyInformational"
+		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $informationalVersion -attributeName "AssemblyInformational" -fileExtension $fileExtension
 	}
 
 	$file = Get-Item $filePath

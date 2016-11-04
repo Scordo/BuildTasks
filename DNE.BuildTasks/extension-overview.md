@@ -5,9 +5,13 @@ This extension contains helpful build tasks.
 
 	This task can version assemblies by using the build number or by manually defining the version number to set.
 	This can be done for 3 different versions separately: AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion
+	Supported languages are: C# and VB.Net
 
 **Changelog**
 ---
+Version: 1.0.9 - 4h of Nov 2016
+* Added support vor VB.net (*.vb)
+
 Version: 1.0.8 - 28th of Oct 2016
 * Added option to overwrite readonly files
 
