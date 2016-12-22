@@ -45,7 +45,7 @@ function ReplaceVersionInFileContent([string] $currentFileContent, [string] $att
 		{
 			# C# is the default case
 			$attributPattern= "\[\s*assembly\s*:\s*$($attributeName)Version(Attribute)?\s*\(.*?\)\s*\]"
-			$newVersionAttribute = '[assembly:'+$attributeName+'Version("'+$newVersion+'")]'
+			$newVersionAttribute = '[assembly: '+$attributeName+'Version("'+$newVersion+'")]'
 		}
 	}
 
