@@ -11,9 +11,9 @@
   ],
   "author": "Jens Hofmann",
   "version": {
-    "Major": 1,
+    "Major": 2,
     "Minor": 0,
-    "Patch": 10
+    "Patch": 0
   },
   "demands": [
     "DotNetFramework"
@@ -91,6 +91,16 @@
       "groupName": "AssemblyInformationalVersionGroup"
     },
     {
+      "name": "assemblyInformationalVersionMustExist",
+      "type": "boolean",
+      "label": "Fail if attribute does not exist",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Fail the tasks if the AssemblyInformationVersion attribute does not exist in all matched files.",
+      "visibleRule": "assemblyInformationalVersionBehaviorString != None",
+      "groupName": "AssemblyInformationalVersionGroup"
+    },
+    {
       "name": "assemblyVersionBehaviorString",
       "type": "pickList",
       "label": "Versioning behavior",
@@ -125,6 +135,16 @@
       "groupName": "AssemblyVersionGroup"
     },
     {
+      "name": "assemblyVersionMustExist",
+      "type": "boolean",
+      "label": "Fail if attribute does not exist",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Fail the tasks if the AssemblyVersion attribute does not exist in all matched files.",
+      "visibleRule": "assemblyVersionBehaviorString != None",
+      "groupName": "AssemblyVersionGroup"
+    },
+    {
       "name": "assemblyFileVersionBehaviorString",
       "type": "pickList",
       "label": "Versioning behavior",
@@ -156,6 +176,16 @@
       "required": false,
       "helpMarkDown": "This is the regex used to extract the version number from the build numer of the current build. The task will search for the named groups major, minor, build and revision. All groups are optional and will be replaced with 0 if they do not exist.",
       "visibleRule": "assemblyFileVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyFileVersionGroup"
+    },
+    {
+      "name": "assemblyFileVersionMustExist",
+      "type": "boolean",
+      "label": "Fail if attribute does not exist",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Fail the tasks if the AssemblyFileVersion attribute does not exist in all matched files.",
+      "visibleRule": "assemblyFileVersionBehaviorString != None",
       "groupName": "AssemblyFileVersionGroup"
     },
     {

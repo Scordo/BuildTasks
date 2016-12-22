@@ -9,6 +9,9 @@ This extension contains helpful build tasks.
 
 **Changelog**
 ---
+Version: 2.0.0 - 22nd of Dec 2016
+* Added option for each version attribute to specify whether the attribute must exists in the target files before replacement
+
 Version: 1.0.10 - 22nd of Dec 2016
 * Added space between "[assembly:" and the attribute name in the C#-Version. This is to satisfy a stylecop rule. ([assembly:AssemblyVersion("1.0.10.0")] --> [assembly: AssemblyVersion("1.0.10.0")])
 

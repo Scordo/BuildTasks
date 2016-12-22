@@ -18,6 +18,9 @@ Trace-VstsEnteringInvocation $MyInvocation
 [string] $fileNamePattern  = Get-VstsInput -Name fileNamePattern
 [string] $searchDirectory  = Get-VstsInput -Name searchDirectory
 [string] $overwriteReadOnly  = Get-VstsInput -Name overwriteReadOnly
+[string] $assemblyFileVersionMustExistString  = Get-VstsInput -Name assemblyFileVersionMustExist
+[string] $assemblyVersionMustExistString  = Get-VstsInput -Name assemblyVersionMustExist
+[string] $assemblyInformationalVersionMustExistString  = Get-VstsInput -Name assemblyInformationalVersionMustExist
 
 
 Add-Type -TypeDefinition "public enum VersionBehavior { None, Custom, BuildNumber }"
@@ -28,7 +31,7 @@ function ExitWithCode([int] $exitcode)
 	exit 
 }
 
-function ReplaceVersionInFileContent([string] $currentFileContent, [string] $attributeName, [string] $newVersion, [string] $fileExtension)
+function ReplaceVersionInFileContent([string] $filePath, [string] $currentFileContent, [string] $attributeName, [string] $newVersion, [string] $fileExtension, [bool] $mustExist)
 {
 	$attributPattern = "";
 	$newVersionAttribute = "";
@@ -55,6 +58,11 @@ function ReplaceVersionInFileContent([string] $currentFileContent, [string] $att
 
 	if ($attributeMatches.Matches.Count -eq 0)
 	{
+		if ($mustExist)
+		{
+			Write-Error "Could not find $($attributeName)VersionAttribute in file $($filePath)!"
+		}
+
 		Write-Verbose "Found no existing $($attributeName)Version-Attribute"
 		$currentFileContent = $currentFileContent+"`n$newVersionAttribute" 
 		Write-Verbose "Added $($attributeName)Version-Attribute as $newVersionAttribute"
@@ -69,7 +77,7 @@ function ReplaceVersionInFileContent([string] $currentFileContent, [string] $att
 }
 
 
-function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informationalVersion, [string] $assemblyVersion,[string] $fileVersion, [bool] $overwriteReadOnlyFile)
+function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informationalVersion, [bool] $informationalVersionMustExist, [string] $assemblyVersion, [bool] $assemblyVersionMustExist,[string] $fileVersion, [bool] $fileVersionMustExist, [bool] $overwriteReadOnlyFile)
 {
 	Write-Verbose ""
 	Write-Host "Going to update version info of file $filePath .."
@@ -80,17 +88,17 @@ function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informatio
 
 	if ($assemblyVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $assemblyVersion -attributeName "Assembly" -fileExtension $fileExtension
+		$fileContent = ReplaceVersionInFileContent -filePath $filePath -currentFileContent $fileContent -newVersion $assemblyVersion -attributeName "Assembly" -fileExtension $fileExtension -mustExist $assemblyVersionMustExist
 	}
 
 	if ($fileVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $fileVersion -attributeName "AssemblyFile" -fileExtension $fileExtension
+		$fileContent = ReplaceVersionInFileContent -filePath $filePath -currentFileContent $fileContent -newVersion $fileVersion -attributeName "AssemblyFile" -fileExtension $fileExtension -mustExist $fileVersionMustExist
 	}
 
 	if ($informationalVersion)
 	{
-		$fileContent = ReplaceVersionInFileContent -currentFileContent $fileContent -newVersion $informationalVersion -attributeName "AssemblyInformational" -fileExtension $fileExtension
+		$fileContent = ReplaceVersionInFileContent -filePath $filePath -currentFileContent $fileContent -newVersion $informationalVersion -attributeName "AssemblyInformational" -fileExtension $fileExtension -mustExist $informationalVersionMustExist
 	}
 
 	$file = Get-Item $filePath
@@ -189,6 +197,9 @@ Write-Host "`tTfvcChangeset = $TfvcChangeset"
 [VersionBehavior] $assemblyInformationalVersionBehavior = $assemblyInformationalVersionBehaviorString;
 [VersionBehavior] $assemblyVersionBehavior = $assemblyVersionBehaviorString;
 [VersionBehavior] $assemblyFileVersionBehavior = $assemblyFileVersionBehaviorString;
+[bool] $assemblyFileVersionMustExist = If ($assemblyFileVersionMustExistString -eq $null -or $assemblyFileVersionMustExistString -eq '') {$false} Else {[bool]::Parse($assemblyFileVersionMustExistString)}
+[bool] $assemblyVersionMustExist = If ($assemblyVersionMustExistString -eq $null -or $assemblyVersionMustExistString -eq '') {$false} Else {[bool]::Parse($assemblyVersionMustExistString)}
+[bool] $informationalVersionMustExist = If ($assemblyInformationalVersionMustExistString -eq $null -or $assemblyInformationalVersionMustExistString -eq '') {$false} Else {[bool]::Parse($assemblyInformationalVersionMustExistString)}
 [bool] $isRecursiveSearch = [bool]::Parse($recursiveSearch)    
 [bool] $overwriteReadOnlyFiles = If ($overwriteReadOnly -eq $null -or $overwriteReadOnly -eq '') {$false} Else {[bool]::Parse($overwriteReadOnly)}
 
@@ -281,7 +292,7 @@ $foundFiles = Get-ChildItem -Path $searchDirectory -Filter $fileNamePattern -Rec
 
 ForEach( $foundFile in $foundFiles) 
 {
-	ReplaceMultipleVersionsInFile -filePath $foundFile.Fullname -informationalVersion $assemblyInformationalVersionString -assemblyVersion $assemblyVersionString -fileVersion $assemblyFileVersionString -overwriteReadOnlyFile $overwriteReadOnlyFiles
+	ReplaceMultipleVersionsInFile -filePath $foundFile.Fullname -informationalVersion $assemblyInformationalVersionString -informationalVersionMustExist $informationalVersionMustExist -assemblyVersion $assemblyVersionString -assemblyVersionMustExist $assemblyVersionMustExist -fileVersion $assemblyFileVersionString -fileVersionMustExist $assemblyFileVersionMustExist -overwriteReadOnlyFile $overwriteReadOnlyFiles
 }
 
 Write-Host ""

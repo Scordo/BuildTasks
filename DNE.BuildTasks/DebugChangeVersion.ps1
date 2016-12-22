@@ -8,14 +8,17 @@ $env:INPUT_assemblyInformationalVersionString = "1.2.3 Release"
 $env:INPUT_assemblyInformationalVersionBuildNumberRegex = "(?<major>\d+)\.(?<minor>\d+)\.(?<build>\d+)\.(?<revision>\d+)-(?<postfix>.+)"      
 $env:INPUT_assemblyInformationalVersionPrefixString = ""
 $env:INPUT_assemblyInformationalVersionPostfixString = " "
+$env:INPUT_assemblyInformationalVersionMustExist = "false"
 
 $env:INPUT_assemblyVersionBehaviorString = "Custom" 
 $env:INPUT_assemblyVersionString = '1.2.0.$TfvcChangeset'   
 $env:INPUT_assemblyVersionBuildNumberRegex = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+$env:INPUT_assemblyVersionMustExist = "false"
 
 $env:INPUT_assemblyFileVersionBehaviorString = "Custom" 
 $env:INPUT_assemblyFileVersionString = "1.2.3.4"   
 $env:INPUT_assemblyFileVersionBuildNumberRegex = "(?<major>\\d+).(?<minor>\\d+).(?<build>\\d+).(?<revision>\\d+)"      
+$env:INPUT_assemblyFileVersionMustExist = "false"
 
 $env:INPUT_recursiveSearch = "true"
 $env:INPUT_fileNamePattern = "AssemblyInfo.*"    
