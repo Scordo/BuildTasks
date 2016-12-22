@@ -205,7 +205,7 @@ Write-Host "`tTfvcChangeset = $TfvcChangeset"
 
 if ($assemblyInformationalVersionBehavior -eq [VersionBehavior]::None  -AND $assemblyVersionBehavior -eq [VersionBehavior]::None -AND $assemblyFileVersionBehavior -eq [VersionBehavior]::None)
 {
-	Write-Host "You must at least select one version bevahior which os not 'Keep defaults'!"  -ForegroundColor Red
+	Write-Host "You must at least select one version behavior which is not 'Keep defaults'!"  -ForegroundColor Red
 	ExitWithCode -exitcode 1
 }
 
