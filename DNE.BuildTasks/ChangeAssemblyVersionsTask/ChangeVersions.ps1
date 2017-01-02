@@ -21,6 +21,13 @@ Trace-VstsEnteringInvocation $MyInvocation
 [string] $assemblyFileVersionMustExistString  = Get-VstsInput -Name assemblyFileVersionMustExist
 [string] $assemblyVersionMustExistString  = Get-VstsInput -Name assemblyVersionMustExist
 [string] $assemblyInformationalVersionMustExistString  = Get-VstsInput -Name assemblyInformationalVersionMustExist
+[string] $missingVersionPartDefaultString  = Get-VstsInput -Name missingVersionPartDefaultString
+[bool] $assemblyVersionCustomMissingPartDefault = Get-VstsInput -Name assemblyVersionCustomMissingPartDefault -AsBool
+[string] $assemblyVersionMissingPartDefaultString  = Get-VstsInput -Name assemblyVersionMissingPartDefaultString
+[bool] $assemblyFileVersionCustomMissingPartDefault = Get-VstsInput -Name assemblyFileVersionCustomMissingPartDefault -AsBool
+[string] $assemblyFileVersionMissingPartDefaultString  = Get-VstsInput -Name assemblyFileVersionMissingPartDefaultString
+[bool] $assemblyInformationalVersionCustomMissingPartDefault = Get-VstsInput -Name assemblyInformationalVersionCustomMissingPartDefault -AsBool
+[string] $assemblyInformationalVersionMissingPartDefaultString  = Get-VstsInput -Name assemblyInformationalVersionMissingPartDefaultString
 
 
 Add-Type -TypeDefinition "public enum VersionBehavior { None, Custom, BuildNumber }"
@@ -113,14 +120,14 @@ function ReplaceMultipleVersionsInFile ([string] $filePath, [string] $informatio
 	[IO.File]::WriteAllText($filePath, $fileContent)
 }
 
-function GetVersionPartDottedString([System.Text.RegularExpressions.Match] $match, [string] $groupName)
+function GetVersionPartDottedString([System.Text.RegularExpressions.Match] $match, [string] $groupName, [string] $missingPartDefaultValue)
 {
 	if ($match.Groups[$groupName].Success)
 	{
 		return $match.Groups[$groupName].Value + "." 
 	}
 	
-	return "0."
+	return $missingPartDefaultValue
 }
 
 function SetChangesetNumber()
@@ -136,7 +143,7 @@ function SetChangesetNumber()
 	}
 }
 
-function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] $prefixString, [string] $postfixString)
+function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] $prefixString, [string] $postfixString, [string] $missingPartDefaultValue)
 {
 	$versionMatches = [System.Text.RegularExpressions.Regex]::Matches($env:BUILD_BUILDNUMBER, $buildNumberPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase);
 
@@ -156,10 +163,10 @@ function GetVersionNumberFromBuildNumber([string] $buildNumberPattern, [string] 
 
 	[string] $versionString = GetVersionPartString -match $firstMatch -groupName "prefix";
 	$versionString += $prefixString
-	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major";
-	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor";
-	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build";
-	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision";
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "major" -missingPartDefaultValue $missingPartDefaultValue;
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "minor" -missingPartDefaultValue $missingPartDefaultValue;
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "build" -missingPartDefaultValue $missingPartDefaultValue;
+	$versionString += GetVersionPartDottedString -match $firstMatch -groupName "revision" -missingPartDefaultValue $missingPartDefaultValue;
 	$versionString = $versionString.TrimEnd('.')
 	$versionString += $postfixString
 	$versionString += GetVersionPartString -match $firstMatch -groupName "postfix";
@@ -209,6 +216,22 @@ if ($assemblyInformationalVersionBehavior -eq [VersionBehavior]::None  -AND $ass
 	ExitWithCode -exitcode 1
 }
 
+if ($assemblyVersionCustomMissingPartDefault -ne $true)
+{
+	$assemblyVersionMissingPartDefaultString = "0."
+}
+
+if ($assemblyFileVersionCustomMissingPartDefault -ne $true)
+{
+	$assemblyFileVersionMissingPartDefaultString = "0."
+}
+
+if ($assemblyInformationalVersionCustomMissingPartDefault -ne $true)
+{
+	$assemblyInformationalVersionMissingPartDefaultString = "0."
+}
+	
+
 Write-Host ""
 Write-Host "Versions to apply:"
 
@@ -226,7 +249,7 @@ switch ($assemblyInformationalVersionBehavior)
 		Write-Host "`tPrefix: $prefix"
 		$postfix = $ExecutionContext.InvokeCommand.ExpandString($assemblyInformationalVersionPostfixString)
 		Write-Host "`tPostfix: $postfix"
-		$assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $prefix -postfixString $postfix
+		$assemblyInformationalVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyInformationalVersionBuildNumberRegex -prefixString $prefix -postfixString $postfix -missingPartDefaultValue $assemblyInformationalVersionMissingPartDefaultString
 		Write-Host "`tAssemblyInformationalVersion: $assemblyInformationalVersionString"
 		continue
 	}
@@ -249,7 +272,7 @@ switch ($assemblyVersionBehavior)
 	}
 	"BuildNumber" 
 	{ 
-		$assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex -prefixString "" -postfixString "" 
+		$assemblyVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyVersionBuildNumberRegex -prefixString "" -postfixString "" -missingPartDefaultValue $assemblyVersionMissingPartDefaultString
 		Write-Host "`tAssemblyVersion: $assemblyVersionString"
 
 		continue
@@ -273,7 +296,7 @@ switch ($assemblyFileVersionBehavior)
 	}
 	"BuildNumber" 
 	{ 
-		$assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex -prefixString "" -postfixString "" 
+		$assemblyFileVersionString = GetVersionNumberFromBuildNumber -buildNumberPattern $assemblyFileVersionBuildNumberRegex -prefixString "" -postfixString "" -missingPartDefaultValue $assemblyFileVersionMissingPartDefaultString
 		Write-Host "`tAssemblyFileVersion: $assemblyFileVersionString"
 
 		continue

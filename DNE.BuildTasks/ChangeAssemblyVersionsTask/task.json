@@ -11,7 +11,7 @@
   ],
   "author": "Jens Hofmann",
   "version": {
-    "Major": 2,
+    "Major": 3,
     "Minor": 0,
     "Patch": 0
   },
@@ -91,6 +91,26 @@
       "groupName": "AssemblyInformationalVersionGroup"
     },
     {
+      "name": "assemblyInformationalVersionCustomMissingPartDefault",
+      "type": "boolean",
+      "label": "Custom default for missing version group",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, the default is '0.'. By enabling this option, you can define your own default in the input field 'Default for missing version group'.",
+      "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyInformationalVersionGroup"
+    },
+    {
+      "name": "assemblyInformationalVersionMissingPartDefaultString",
+      "type": "string",
+      "label": "Default for missing version group",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, this is the default for the part of the version.",
+      "visibleRule": "assemblyInformationalVersionBehaviorString = BuildNumber && assemblyInformationalVersionCustomMissingPartDefault = true",
+      "groupName": "AssemblyInformationalVersionGroup"
+    },
+    {
       "name": "assemblyInformationalVersionMustExist",
       "type": "boolean",
       "label": "Fail if attribute does not exist",
@@ -135,6 +155,26 @@
       "groupName": "AssemblyVersionGroup"
     },
     {
+      "name": "assemblyVersionCustomMissingPartDefault",
+      "type": "boolean",
+      "label": "Custom default for missing version group",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, the default is '0.'. By enabling this option, you can define your own default in the input field 'Default for missing version group'.",
+      "visibleRule": "assemblyVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyVersionGroup"
+    },
+    {
+      "name": "assemblyVersionMissingPartDefaultString",
+      "type": "string",
+      "label": "Default for missing version group",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, this is the default for the part of the version.",
+      "visibleRule": "assemblyVersionBehaviorString = BuildNumber && assemblyVersionCustomMissingPartDefault = true",
+      "groupName": "AssemblyVersionGroup"
+    },
+    {
       "name": "assemblyVersionMustExist",
       "type": "boolean",
       "label": "Fail if attribute does not exist",
@@ -176,6 +216,26 @@
       "required": false,
       "helpMarkDown": "This is the regex used to extract the version number from the build numer of the current build. The task will search for the named groups major, minor, build and revision. All groups are optional and will be replaced with 0 if they do not exist.",
       "visibleRule": "assemblyFileVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyFileVersionGroup"
+    },
+    {
+      "name": "assemblyFileVersionCustomMissingPartDefault",
+      "type": "boolean",
+      "label": "Custom default for missing version group",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, the default is '0.'. By enabling this option, you can define your own default in the input field 'Default for missing version group'.",
+      "visibleRule": "assemblyFileVersionBehaviorString = BuildNumber",
+      "groupName": "AssemblyFileVersionGroup"
+    },
+    {
+      "name": "assemblyFileVersionMissingPartDefaultString",
+      "type": "string",
+      "label": "Default for missing version group",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "If any of the groups: major, minor, build or revision is not provided in the regex, this is the default for the part of the version.",
+      "visibleRule": "assemblyFileVersionBehaviorString = BuildNumber && assemblyFileVersionCustomMissingPartDefault = true",
       "groupName": "AssemblyFileVersionGroup"
     },
     {

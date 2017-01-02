@@ -73,11 +73,22 @@ This version behavior is ued to extract the version from the variable $(Build.Bu
 * __Fail if attribute does not exist__ 
 	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
 
+* __Custom default for missing version group__
+	* If this is checked, you can provide an own default value for missing groups ("major", "minor", "build" or "revision") in the "__Buildnumber Version-Regex__". For example you can leave the input "__Default for missing version group__" blank to have an empty default.
+	* If this is __not__ checked, "0." will be the default for missing groups ("major", "minor", "build" or "revision") in the "__Buildnumber Version-Regex__".
+
+* __Default for missing version group__
+	* Here you can provide a default for missing missing groups ("major", "minor", "build" or "revision") in the "__Buildnumber Version-Regex__".
+
 * __Examples__
-	* TODO: Add examples
+	* (?&lt;major&gt;\\d+)\\.(?&lt;minor&gt;\\d+)\\.(?&lt;build&gt;\\d+)\\.(?&lt;revision&gt;\\d+)
+		* for value "Build 15 - 1.2.3.4 - master" this will match: major = 1, minor = 2, build = 3 and revision = 4, resulting in version 1.2.3.4
 	
 ## Changelog
 ---
+Version: 3.0.0 - 20th of Jan 2017
+* Added option to specify a custom default value for missing version groups in regex of Versioning behavior "Extract the version from the Buildnumber using a regular expression
+
 Version: 2.0.0 - 22nd of Dec 2016
 * Added option for each version attribute to specify whether the attribute must exists in the target files before replacement
 
