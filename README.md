@@ -26,20 +26,46 @@ This extension contains helpful build tasks.
 
 This version behavior does nothing. It just leaves the configured attribute "as is" and does not run any action.
 
-### Versioning behavior - Provide a static version or use variables to define the version.
+### Versioning behavior - Provide a static version or use variables to define the version
 
 This version behavior is ued to provide a static version. You can either set it to a constanst value like "1.2.3.4" or you can use variables provided by the team foundation infrastructure or the ones defined in the build definition. There is also a special Variable $TfvcChangeset, which will give you the latest changeset number of TFVC without the leading "C".
 
 * __AssemblyVersion__ 
-	* Examples 
-		* 1.0.0.$TfvcChangeset
-			* could for example result in: "1.0.0.26118"
-		* 1.0.0.$TfvcChangeset $(Build.SourceBranchName)
-			* could for example result in: "1.0.0.26118 FeatureBranch1"
-			* would only be valid for AssemblyInformationalVersion, because a descriptive string is in the version
+	
 * __Fail if attribute does not exist__ 
 	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
 
+* __Examples for AssemblyVersion__
+	* 1.0.0.$TfvcChangeset
+		* could for example result in: "1.0.0.26118"
+	* 1.0.0.$TfvcChangeset $(Build.SourceBranchName)
+		* could for example result in: "1.0.0.26118 FeatureBranch1"
+		* would only be valid for AssemblyInformationalVersion, because a descriptive string is in the version
+
+### Versioning behavior - Extract the version from the Buildnumber using a regular expression
+
+This version behavior is ued to extract the version from the variable $(Build.BuildNumber) using the regular expression provided in "Buildnumber Version-Regex".
+
+* __Buildnumber Version-Regex__ 
+	* The regular expression used to extract version parts from the variable $(Build.BuildNumber)
+	* The following groups are supported
+		* major
+		* minor
+		* build
+		* revision
+	* The resulting version number will be a concatination of all the groups in the above order with a dot between the group values
+		* major.minor.build.revision
+	* If a group was not matched the number "0" will be set or it
+		* If revision is missing: major.minor.build.0
+	* When using this behavior for "AssemblyInformationalVersion", there are two more properties: Prefix and Postfix
+		* The concatination would then be: prefix.major.minor.build.revision.postfix
+		
+* __Fail if attribute does not exist__ 
+	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
+
+* __Examples__
+	* TODO: Add examples
+	
 ## Changelog
 ---
 Version: 2.0.0 - 22nd of Dec 2016
