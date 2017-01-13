@@ -6,8 +6,23 @@ This extension contains helpful build tasks.
 	This task can version assemblies by using the build number or by manually defining the version number to set.
 	This can be done for 3 different versions separately: AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion
 	Supported languages are: C# and VB.Net
+	
 
-**Changelog**
+## Task: Change Assembly Versions
+
+### General Properties
+
+* __Directory__ 
+	* This is the directory where to search for files containing any of the 3 Assembly-Version attributes
+* __Filename__
+	* The filenames to find in the directory defined above. For example __"AssemblyInfo.cs"__ would find __"$/Temp/AssemblyInfo.cs"__ if __"$/Temp"__ was set for the directory.
+	* If you want to update both, CSHARP and VB.Net assemblyinfo, you can set __"AssemblyInfo.*"__. This would match __"$/Temp/AssemblyInfo.cs"__ and __"$/Temp/AssemblyInfo.vb"__ if __"$/Temp"__ was set for the directory.
+* __Recursive__
+	* If recursive is checked, all sub directories of the above defined directory are included into the search
+* __Overwrite readonly__
+	* If this is checked, readonly files will be overwritten. If this is not checked and a read-only file has to be updated, the task will fail with an error message
+
+## Changelog
 ---
 Version: 2.0.0 - 22nd of Dec 2016
 * Added option for each version attribute to specify whether the attribute must exists in the target files before replacement
