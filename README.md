@@ -49,16 +49,20 @@ This version behavior is ued to extract the version from the variable $(Build.Bu
 * __Buildnumber Version-Regex__ 
 	* The regular expression used to extract version parts from the variable $(Build.BuildNumber)
 	* The following groups are supported
+		* prefix
 		* major
 		* minor
 		* build
 		* revision
-	* The resulting version number will be a concatination of all the groups in the above order with a dot between the group values
-		* major.minor.build.revision
-	* If a group was not matched the number "0" will be set or it
-		* If revision is missing: major.minor.build.0
+		* postfix
+	* The resulting version number will be a concatination of all the groups in the above order with a dot between the group values of "major", "minor", "build" or "revision" and no seperator after group "prefix" and before "postfix"
+		* **p**refix**m**ajor.**m**inor.**b**uild.**r**evision**p**ostfix
+	* If any of the groups "major", "minor", "build" or "revision" was not matched the number "0" will be set or it
+		* If revision is missing: **p**refix**ma**jor.**m**inor.**b**uild.0**p**ostfix
+	* If any of the groups "prefix" or "postfix" was not matched an empty string will be set or it
+		* If prefix is missing: **m**ajor.**m**inor.**b**uild.**r**evision**p**ostfix
 	* When using this behavior for "AssemblyInformationalVersion", there are two more properties: Prefix and Postfix
-		* The concatination would then be: prefix.major.minor.build.revision.postfix
+		* The concatination would then be: **p**refix**p**refixProperty**m**ajor.**m**inor.**b**uild.**r**evision**p**ostfixProperty**p**ostfix
 		
 * __Fail if attribute does not exist__ 
 	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
