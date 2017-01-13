@@ -63,7 +63,13 @@ This version behavior is ued to extract the version from the variable $(Build.Bu
 		* If prefix is missing: **m**ajor.**m**inor.**b**uild.**r**evision**p**ostfix
 	* When using this behavior for "AssemblyInformationalVersion", there are two more properties: Prefix and Postfix
 		* The concatination would then be: **p**refix**p**refixProperty**m**ajor.**m**inor.**b**uild.**r**evision**p**ostfixProperty**p**ostfix
-		
+
+* __Prefix__ 
+	* An optional string which is put in front of the matched version numbers, but after an optionally matched prefix-regex-group. 	
+
+* __Postfix__ 
+	* An optional string which is put at the end of the matched version numbers, but before an optionally matched postfix-regex-group. 
+	
 * __Fail if attribute does not exist__ 
 	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
 
