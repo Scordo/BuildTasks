@@ -33,6 +33,7 @@ This version behavior is ued to provide a static version. You can either set it 
 * __AssemblyVersion__ 
 	* Examples 
 		* 1.0.0.$TfvcChangeset
+			* could for example result in: "1.0.0.26118"
 		* 1.0.0.$TfvcChangeset $(Build.SourceBranchName)
 			* could for example result in: "1.0.0.26118 FeatureBranch1"
 			* would only be valid for AssemblyInformationalVersion, because a descriptive string is in the version
