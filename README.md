@@ -36,7 +36,7 @@ This version behavior is ued to provide a static version. You can either set it 
 		* 1.0.0.$TfvcChangeset $(Build.SourceBranchName)
 			* could for example result in: "1.0.0.26118 FeatureBranch1"
 			* would only be valid for AssemblyInformationalVersion, because a descriptive string is in the version
-* __AssemblyVersion__ 
+* __Fail if attribute does not exist__ 
 	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
 
 ## Changelog
