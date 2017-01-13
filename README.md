@@ -22,6 +22,23 @@ This extension contains helpful build tasks.
 * __Overwrite readonly__
 	* If this is checked, readonly files will be overwritten. If this is not checked and a read-only file has to be updated, the task will fail with an error message
 
+### Versioning behavior - Keep defaults - do nothing
+
+This version behavior does nothing. It just leaves the configured attribute "as is" and does not run any action.
+
+### Versioning behavior - Provide a static version or use variables to define the version.
+
+This version behavior is ued to provide a static version. You can either set it to a constanst value like "1.2.3.4" or you can use variables provided by the team foundation infrastructure or the ones defined in the build definition. There is also a special Variable $TfvcChangeset, which will give you the latest changeset number of TFVC without the leading "C".
+
+* __AssemblyVersion__ 
+	* Examples 
+		* 1.0.0.$TfvcChangeset
+		* 1.0.0.$TfvcChangeset $(Build.SourceBranchName)
+			* could for example result in: "1.0.0.26118 FeatureBranch1"
+			* would only be valid for AssemblyInformationalVersion, because a descriptive string is in the version
+* __AssemblyVersion__ 
+	* If this is checked, the task would fail, if the configured attribute is not found in all matched files.
+
 ## Changelog
 ---
 Version: 2.0.0 - 22nd of Dec 2016
