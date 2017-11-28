@@ -2,7 +2,7 @@
   "id": "A516EAB5-3EEC-455E-8685-38A41606D2AC",
   "name": "ChangeAssemblyVersionsTask",
   "friendlyName": "Change Assembly Versions",
-  "description": "Allows to change/add AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion in AssemblyInfo.cs files using a custom shema or from the build-number.",
+  "description": "Allows to change/add AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion in AssemblyInfo.cs files using a custom schema or from the build-number.",
   "helpMarkDown": "No help available yet!",
   "category": "Utility",
   "visibility": [
